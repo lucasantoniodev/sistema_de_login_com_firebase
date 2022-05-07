@@ -1,6 +1,10 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:login_com_firebase/widgets/animated/custom_animated_text_widget.dart';
+import 'package:login_com_firebase/widgets/custom_button_widget.dart';
+import 'package:login_com_firebase/widgets/custom_textbutton_widget.dart';
+import 'package:login_com_firebase/widgets/custom_textfield_widget.dart';
+import 'package:login_com_firebase/widgets/custom_title_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -66,130 +70,31 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const Icon(Icons.phone_android, size: 200),
                 const SizedBox(height: 75),
-                const Text(
-                  'Register now',
-                  style: TextStyle(
-                      fontFamily: 'Agne',
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold),
-                ),
+                const CustomTitleWidget(text: 'Register now'),
                 const SizedBox(height: 10),
-                AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText('Register below with your details!',
-                        speed: const Duration(milliseconds: 300),
-                        textStyle: const TextStyle(
-                          fontFamily: 'Agne',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        )),
-                  ],
-                  repeatForever: true,
-                ),
+                const CustomAnimatedText(
+                    text: 'Register below with your details!'),
                 const SizedBox(height: 50),
-                // Input Email
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.white)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.deepPurple),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        label: const Text('Email'),
-                        suffixIcon: const Icon(Icons.person),
-                        fillColor: Colors.grey[200],
-                        filled: true),
-                  ),
-                ),
-                // Input Password
+                CustomTextFieldWidget(controller: _emailController, label: "Email"),
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: TextField(
-                    obscureText: true,
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.white)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.deepPurple),
-                            borderRadius: BorderRadius.circular(12)),
-                        label: const Text('Password'),
-                        suffixIcon: const Icon(Icons.password),
-                        fillColor: Colors.grey[200],
-                        filled: true),
-                  ),
-                ),
-                // Input Confirm Password
+                CustomTextFieldWidget(controller: _passwordController, label: "Password"),
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: TextField(
-                    obscureText: true,
-                    controller: _confirmPasswordController,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.deepPurple),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      label: const Text('Confirm Password'),
-                      suffixIcon: const Icon(Icons.password),
-                      fillColor: Colors.grey[200],
-                      filled: true,
+                CustomTextFieldWidget(controller: _confirmPasswordController, label: "Confirm Password"),
+                const SizedBox(height: 10),
+                CustomButtonWidget(method: register, text: 'Register'),
+                const SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'I am a member',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: GestureDetector(
-                    onTap: register,
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Register',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                 const SizedBox(height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'I am a member',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextButton(
-                        onPressed: widget.showLoginPage,
-                        child: const Text('Login now'),
-                      )
-                    ],
-                  )
+                    const SizedBox(width: 4),
+                    CustomTextButtonWidget(
+                        method: widget.showLoginPage, text: 'Login now')
+                  ],
+                )
               ],
             )),
           ),
