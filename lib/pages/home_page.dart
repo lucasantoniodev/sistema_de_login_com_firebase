@@ -15,15 +15,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Signed in as: ' + user.email!),
-          ElevatedButton(
-              onPressed: () => FirebaseAuth.instance.signOut(),
-              child: const Text('Sing Out'))
-        ],
-      )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Signed in as: ' + user.email!),
+            ElevatedButton(
+                onPressed: () => FirebaseAuth.instance.signOut(),
+                child: const Text('Sing Out'))
+          ],
+        ),
+      ),
     );
   }
 }

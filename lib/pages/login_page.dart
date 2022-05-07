@@ -1,9 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:login_com_firebase/pages/forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final VoidCallback showRegisterPage;
+  const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -11,7 +13,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
-
   final _passwordController = TextEditingController();
 
   Future singIn() async {
@@ -20,25 +21,22 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-    } catch (e) {
-      debugPrint(e.toString());
-      return ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message.toString());
+      return ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message.toString()),
+        ),
+      );
     }
   }
 
-  // Future register() async {
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //         email: _emailController.text.trim(),
-  //         password: _passwordController.text.trim());
-  //   } catch (e) {
-  //     return ScaffoldMessenger(
-  //         child: SnackBar(
-  //       content: Text(e.toString()),
-  //     ));
-  //   }
-  // }
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                     repeatForever: true,
                   ),
                   const SizedBox(height: 50),
+                  // INPUT EMAIL
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: TextField(
@@ -97,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                           filled: true),
                     ),
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: TextField(
@@ -121,6 +120,29 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const ForgotPasswordPage();
+                            }));
+                          },
+                          child: const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              color: Color.fromRGBO(156, 39, 176, 1),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 10),
                     child: GestureDetector(
                       onTap: singIn,
                       child: Container(
@@ -142,7 +164,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -151,8 +172,13 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextButton(
-                          onPressed: () => '',
-                          child: const Text('Register now'))
+                        onPressed: widget.showRegisterPage,
+                        child: const Text(
+                          'Register now',
+                          style:
+                              TextStyle(color: Color.fromRGBO(156, 39, 176, 1)),
+                        ),
+                      )
                     ],
                   )
                 ],
