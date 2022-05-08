@@ -1,12 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:login_com_firebase/auth/main_page.dart';
+import 'package:login_com_firebase/auth/auth_check.dart';
 import 'package:login_com_firebase/firebase_options.dart';
+import 'package:login_com_firebase/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  runApp(MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => AuthService())],
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,10 +19,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            backgroundColor: Colors.grey, primarySwatch: Colors.purple),
-        home: const MainPage(),
-        );
+      debugShowCheckedModeBanner: false,
+      theme:
+          ThemeData(backgroundColor: Colors.grey, primarySwatch: Colors.purple),
+      home: const AuthCheck(),
+    );
   }
 }

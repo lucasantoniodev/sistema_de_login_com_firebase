@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:login_com_firebase/services/auth_service.dart';
 import 'package:login_com_firebase/widgets/animated/custom_animated_text_widget.dart';
 import 'package:login_com_firebase/widgets/custom_button_widget.dart';
 import 'package:login_com_firebase/widgets/custom_textbutton_widget.dart';
 import 'package:login_com_firebase/widgets/custom_textfield_widget.dart';
 import 'package:login_com_firebase/widgets/custom_title_widget.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -19,28 +20,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  bool _passwordConfirmed() {
-    if (_passwordController.text.trim() ==
-        _confirmPasswordController.text.trim()) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Future register() async {
-    if (_passwordConfirmed()) {
-      try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
-      } catch (e) {
-        return ScaffoldMessenger(
-            child: SnackBar(
-          content: Text(e.toString()),
-        ));
-      }
+  register() async {
+    context.read<AuthService>().passwordConfirmed(
+        _passwordController.text, _confirmPasswordController.text);
+    try {
+      await context
+          .read<AuthService>()
+          .register(_emailController.text, _passwordController.text);
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 
@@ -75,11 +64,34 @@ class _RegisterPageState extends State<RegisterPage> {
                 const CustomAnimatedText(
                     text: 'Register below with your details!'),
                 const SizedBox(height: 50),
-                CustomTextFieldWidget(controller: _emailController, label: "Email"),
+                CustomTextFieldWidget(
+                  controller: _emailController,
+                  label: "Email",
+                  icon: const Icon(
+                    Icons.email,
+                    color: Colors.black,
+                  ),
+                ),
                 const SizedBox(height: 10),
-                CustomTextFieldWidget(controller: _passwordController, label: "Password"),
+                CustomTextFieldWidget(
+                  controller: _passwordController,
+                  label: "Password",
+                  obscure: true,
+                  icon: const Icon(
+                    Icons.password,
+                    color: Colors.black,
+                  ),
+                ),
                 const SizedBox(height: 10),
-                CustomTextFieldWidget(controller: _confirmPasswordController, label: "Confirm Password"),
+                CustomTextFieldWidget(
+                  controller: _confirmPasswordController,
+                  label: "Confirm Password",
+                  obscure: true,
+                  icon: const Icon(
+                    Icons.password,
+                    color: Colors.black,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 CustomButtonWidget(method: register, text: 'Register'),
                 const SizedBox(height: 25),

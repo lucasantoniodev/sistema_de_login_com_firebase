@@ -1,11 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_com_firebase/pages/forgot_password_page.dart';
+import 'package:login_com_firebase/services/auth_service.dart';
 import 'package:login_com_firebase/widgets/animated/custom_animated_text_widget.dart';
 import 'package:login_com_firebase/widgets/custom_button_widget.dart';
 import 'package:login_com_firebase/widgets/custom_textbutton_widget.dart';
 import 'package:login_com_firebase/widgets/custom_textfield_widget.dart';
 import 'package:login_com_firebase/widgets/custom_title_widget.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -19,19 +20,14 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future singIn() async {
+  login() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      debugPrint(e.message.toString());
-      return ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.message.toString()),
-        ),
-      );
+      await context
+          .read<AuthService>()
+          .singIn(_emailController.text, _passwordController.text);
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 
@@ -44,17 +40,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    navigation() {
-      return Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return const ForgotPasswordPage();
-          },
-        ),
-      );
-    }
-
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -79,7 +64,10 @@ class _LoginPageState extends State<LoginPage> {
 
                   // INPUT Email
                   CustomTextFieldWidget(
-                      controller: _emailController, label: 'Email'),
+                    controller: _emailController,
+                    label: 'Email',
+                    icon: const Icon(Icons.email, color: Colors.black,),
+                  ),
 
                   const SizedBox(height: 10),
 
@@ -88,16 +76,25 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _passwordController,
                     label: 'Password',
                     obscure: true,
+                    icon: const Icon(Icons.password,color: Colors.black),
                   ),
 
                   const SizedBox(height: 10),
 
                   CustomTextButtonWidget(
-                      text: 'Forgot Password?', method: navigation),
+                      text: 'Forgot Password?',
+                      method: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ForgotPasswordPage();
+                              },
+                            ),
+                          )),
 
                   const SizedBox(height: 10),
 
-                  CustomButtonWidget(method: singIn, text: "Sing In"),
+                  CustomButtonWidget(method: login, text: "Sing In"),
 
                   const SizedBox(height: 10),
                   Row(

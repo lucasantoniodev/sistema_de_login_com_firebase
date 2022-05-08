@@ -5,14 +5,14 @@ class CustomTextFieldWidget extends StatelessWidget {
   final String label;
   final TextInputType? type;
   final bool? obscure;
-  
+  final Icon? icon;
 
   const CustomTextFieldWidget({
     Key? key,
     required this.controller,
     required this.label,
     this.type,
-    this.obscure = false,
+    this.obscure = false, this.icon,
   }) : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class CustomTextFieldWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           label: Text(label),
-          suffixIcon: const Icon(Icons.person),
+          suffixIcon: icon,
           fillColor: Colors.grey[200],
           filled: true),
     );
