@@ -43,6 +43,7 @@ class AuthService extends ChangeNotifier {
           email: email.trim(),
           password: password.trim(),
         );
+      
         _getUser();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {

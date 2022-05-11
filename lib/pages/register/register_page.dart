@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:login_com_firebase/services/auth_service.dart';
+import 'package:login_com_firebase/services/firebase/auth_service.dart';
+import 'package:login_com_firebase/services/firebase/user_details_service.dart';
 import 'package:login_com_firebase/widgets/animated/custom_animated_text_widget.dart';
 import 'package:login_com_firebase/widgets/custom_button_widget.dart';
 import 'package:login_com_firebase/widgets/custom_textbutton_widget.dart';
@@ -19,6 +20,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _ageController = TextEditingController();
 
   register() async {
     context.read<AuthService>().passwordConfirmed(
@@ -27,6 +31,8 @@ class _RegisterPageState extends State<RegisterPage> {
       await context
           .read<AuthService>()
           .register(_emailController.text, _passwordController.text);
+      UserDetailsService.instance.addUserDetails(_firstNameController.text,
+          _lastNameController.text, _emailController.text, _ageController.text);
     } on AuthException catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));
@@ -37,6 +43,9 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _ageController.dispose();
     super.dispose();
   }
 
@@ -57,13 +66,47 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.phone_android, size: 200),
-                const SizedBox(height: 75),
                 const CustomTitleWidget(text: 'Register now'),
                 const SizedBox(height: 10),
                 const CustomAnimatedText(
                     text: 'Register below with your details!'),
                 const SizedBox(height: 50),
+
+                // First Name TextField
+                CustomTextFieldWidget(
+                  controller: _firstNameController,
+                  label: "First Name",
+                  icon: const Icon(
+                    Icons.email,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Last Name TextField
+                CustomTextFieldWidget(
+                  controller: _lastNameController,
+                  label: "Last Name",
+                  icon: const Icon(
+                    Icons.email,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Age TextField
+                CustomTextFieldWidget(
+                  type: TextInputType.number,
+                  controller: _ageController,
+                  label: "Age",
+                  icon: const Icon(
+                    Icons.email,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Email TextField
                 CustomTextFieldWidget(
                   controller: _emailController,
                   label: "Email",
@@ -73,6 +116,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
+
+                // Password TextField
                 CustomTextFieldWidget(
                   controller: _passwordController,
                   label: "Password",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:login_com_firebase/auth/auth_page.dart';
-import 'package:login_com_firebase/pages/home_page.dart';
-import 'package:login_com_firebase/services/auth_service.dart';
+import 'package:login_com_firebase/pages/home/home_page.dart';
+import 'package:login_com_firebase/services/firebase/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class AuthCheck extends StatefulWidget {
@@ -27,8 +27,8 @@ class _AuthCheckState extends State<AuthCheck> {
     } else if (auth.usuario == null) {
       return const AuthPage();
     } else {
+      
       return const HomePage();
     }
   }
-  
 }

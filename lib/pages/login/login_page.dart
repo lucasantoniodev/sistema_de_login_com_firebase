@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:login_com_firebase/pages/forgot_password_page.dart';
-import 'package:login_com_firebase/services/auth_service.dart';
+import 'package:login_com_firebase/pages/forgot_password/forgot_password_page.dart';
+import 'package:login_com_firebase/services/firebase/auth_service.dart';
 import 'package:login_com_firebase/widgets/animated/custom_animated_text_widget.dart';
 import 'package:login_com_firebase/widgets/custom_button_widget.dart';
 import 'package:login_com_firebase/widgets/custom_textbutton_widget.dart';
