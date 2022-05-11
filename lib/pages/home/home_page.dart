@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Signed in as: ' + user.email!),
+        title: Text(user.email!, style: const TextStyle(fontSize: 14)),
         actions: [
           GestureDetector(
               onTap: () => FirebaseAuth.instance.signOut(),

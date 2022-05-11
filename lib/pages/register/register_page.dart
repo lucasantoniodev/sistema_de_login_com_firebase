@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_com_firebase/services/firebase/auth_service.dart';
-import 'package:login_com_firebase/services/firebase/user_details_service.dart';
+import 'package:login_com_firebase/services/firebase/add_user_details_service.dart';
 import 'package:login_com_firebase/widgets/animated/custom_animated_text_widget.dart';
 import 'package:login_com_firebase/widgets/custom_button_widget.dart';
 import 'package:login_com_firebase/widgets/custom_textbutton_widget.dart';
@@ -31,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await context
           .read<AuthService>()
           .register(_emailController.text, _passwordController.text);
-      UserDetailsService.instance.addUserDetails(_firstNameController.text,
+      AddUserDetailsService.instance.addUserDetails(_firstNameController.text,
           _lastNameController.text, _emailController.text, _ageController.text);
     } on AuthException catch (e) {
       ScaffoldMessenger.of(context)
