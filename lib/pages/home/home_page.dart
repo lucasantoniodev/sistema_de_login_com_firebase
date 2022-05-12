@@ -48,9 +48,9 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: FutureBuilder(
                 future: getDocId(),
-                builder: (context, snapshot) => ListView.builder(
+                builder: (_, __) => ListView.builder(
                   itemCount: docIDs.length,
-                  itemBuilder: (context, index) => Padding(
+                  itemBuilder: (_, index) => Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
                       title: GetUserInfo(documentId: docIDs[index]),

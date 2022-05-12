@@ -66,24 +66,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
               decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.white)),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.deepPurple),
+                enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                  ),
-                  label: const Text('Email'),
-                  suffixIcon: const Icon(Icons.person),
-                  fillColor: Colors.grey[200],
-                  filled: true),
+                    borderSide: const BorderSide(color: Colors.white)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.deepPurple),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                label: const Text('Email'),
+                suffixIcon: const Icon(Icons.person),
+                fillColor: Colors.grey[200],
+                filled: true,
+              ),
             ),
           ),
           const SizedBox(height: 10),
           MaterialButton(
-              onPressed: () => passwordReset(),
-              child: const Text('Reset Password'),
-              color: Colors.deepPurple[200]),
+            onPressed: () => passwordReset(),
+            color: Colors.deepPurple[200],
+            child: const Text('Reset Password'),
+          ),
         ],
       ),
     );
