@@ -18,7 +18,7 @@ class AuthService extends ChangeNotifier {
 
   _authCheck() {
     _auth.authStateChanges().listen((User? user) {
-      usuario = (user == null) ? user : null;
+      usuario = (user == null) ? null : user;
       isLoading = false;
       notifyListeners();
     });
@@ -43,7 +43,7 @@ class AuthService extends ChangeNotifier {
           email: email.trim(),
           password: password.trim(),
         );
-      
+
         _getUser();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
