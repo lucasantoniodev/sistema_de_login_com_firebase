@@ -33,6 +33,7 @@ class AuthService extends ChangeNotifier {
 
   _getUser() {
     usuario = _auth.currentUser;
+
     notifyListeners();
   }
 
@@ -58,12 +59,15 @@ class AuthService extends ChangeNotifier {
   }
 
   Future singIn(String email, String password) async {
+    isLoading = true;
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
       _getUser();
+      notifyListeners();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw AuthException('Email não encontrado. Cadastre-se.');

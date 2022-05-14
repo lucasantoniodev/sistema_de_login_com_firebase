@@ -10,7 +10,6 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => AuthService()),
-    
   ], child: const MyApp()));
 }
 
@@ -21,8 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme:
-          ThemeData(backgroundColor: Colors.grey, primarySwatch: Colors.purple),
+      theme: ThemeData(
+        useMaterial3: true,
+        backgroundColor: Colors.grey,
+        primarySwatch: Colors.purple,
+      ),
       home: const AuthCheck(),
     );
   }

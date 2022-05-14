@@ -20,7 +20,19 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  void removeContext() {
+    Navigator.of(context).pop();
+  }
+
   login() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+
     try {
       await context
           .read<AuthService>()
@@ -29,6 +41,8 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));
     }
+
+    removeContext();
   }
 
   @override
@@ -66,7 +80,10 @@ class _LoginPageState extends State<LoginPage> {
                   CustomTextFieldWidget(
                     controller: _emailController,
                     label: 'Email',
-                    icon: const Icon(Icons.email, color: Colors.black,),
+                    icon: const Icon(
+                      Icons.email,
+                      color: Colors.black,
+                    ),
                   ),
 
                   const SizedBox(height: 10),
@@ -76,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _passwordController,
                     label: 'Password',
                     obscure: true,
-                    icon: const Icon(Icons.password,color: Colors.black),
+                    icon: const Icon(Icons.password, color: Colors.black),
                   ),
 
                   const SizedBox(height: 10),

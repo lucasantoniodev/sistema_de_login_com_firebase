@@ -19,8 +19,26 @@ class GetUserInfo extends StatelessWidget {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
 
-            return Text(
-                '${data['firstName']} ${data['lastName']} ${data['age']} years old');
+            return RichText(
+              text: TextSpan(
+                text: '',
+                style: DefaultTextStyle.of(context).style,
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Nome completo: ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: '${data['firstName']} ${data['lastName']}',
+                  ),
+                  const TextSpan(
+                    text: '\nAge:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: ' ${data['age']} years old')
+                ],
+              ),
+            );
           }
           return const Text('Loading...');
         });

@@ -11,6 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Instância para o FirebaseFirestore
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  // Usuário instanciado
   final user = FirebaseAuth.instance.currentUser!;
 
   // document IDs
@@ -18,12 +21,13 @@ class _HomePageState extends State<HomePage> {
 
   // get docIDs
   Future getDocId() async {
-    await FirebaseFirestore.instance.collection('users').orderBy('age', descending: false).get().then((snapshot) {
-      for (var document in snapshot.docs) {
-        docIDs.add(document.reference.id);
-      }
-
-    });
+    await db.collection('users').orderBy('age', descending: false).get().then(
+      (snapshot) {
+        for (var document in snapshot.docs) {
+          docIDs.add(document.reference.id);
+        }
+      },
+    );
   }
 
   @override
@@ -32,32 +36,35 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(user.email!, style: const TextStyle(fontSize: 14)),
         actions: [
-          GestureDetector(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0,0,10,0),
+            child: GestureDetector(
               onTap: () => FirebaseAuth.instance.signOut(),
-              child: const Icon(Icons.logout))
+              child: const Icon(Icons.logout),
+            ),
+          )
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: FutureBuilder(
-                future: getDocId(),
-                builder: (_, __) => ListView.builder(
-                  itemCount: docIDs.length,
-                  itemBuilder: (_, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      title: GetUserInfo(documentId: docIDs[index]),
-                      tileColor: Colors.grey[200],
-                    ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: FutureBuilder(
+              future: getDocId(),
+              builder: (_, __) => ListView.builder(
+                itemCount: docIDs.length,
+                itemBuilder: (_, index) => Card(
+                  margin: const EdgeInsets.all(10),
+                  elevation: 10,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: GetUserInfo(documentId: docIDs[index]),
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
